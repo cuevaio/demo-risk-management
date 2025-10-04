@@ -31,6 +31,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import socioeconomic, {
   socioeconomicColumns,
   aggregateByZone,
@@ -493,7 +494,7 @@ export default function DataManagement() {
                         Nueva Encuesta
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-h-[80vh] overflow-auto">
+                    <DialogContent className="max-h-[85vh] overflow-auto md:max-w-3xl">
                       <DialogHeader>
                         <DialogTitle>Información Socioeconómica</DialogTitle>
                         <DialogDescription>
@@ -504,10 +505,14 @@ export default function DataManagement() {
 
                       <form
                         onSubmit={handleNewSurveySubmit}
-                        className="space-y-6"
+                        className="px-6 pb-6 space-y-10"
                       >
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <div className="space-y-2">
+                        <h4 className="text-sm font-semibold text-muted-foreground">
+                          Datos del encuestado
+                        </h4>
+                        <Separator className="my-2" />
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                          <div className="space-y-3">
                             <label className="text-sm font-medium">
                               ¿Cuál es su género?
                             </label>
@@ -542,7 +547,7 @@ export default function DataManagement() {
                             </div>
                           </div>
 
-                          <div className="space-y-2">
+                          <div className="space-y-3">
                             <label className="text-sm font-medium">
                               ¿Cuál es su edad?
                             </label>
@@ -562,7 +567,11 @@ export default function DataManagement() {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <h4 className="text-sm font-semibold text-muted-foreground">
+                          Datos del hogar
+                        </h4>
+                        <Separator className="my-2" />
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
                               ¿Cuántas personas viven en su hogar?
@@ -598,7 +607,11 @@ export default function DataManagement() {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <h4 className="text-sm font-semibold text-muted-foreground">
+                          Salud y educación
+                        </h4>
+                        <Separator className="my-2" />
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
                               ¿Cuántas personas tienen acceso a un seguro de
@@ -637,7 +650,11 @@ export default function DataManagement() {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <h4 className="text-sm font-semibold text-muted-foreground">
+                          Vivienda
+                        </h4>
+                        <Separator className="my-2" />
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
                               ¿Cuántas personas no saben leer ni escribir?
@@ -672,11 +689,15 @@ export default function DataManagement() {
                         </div>
 
                         <div className="space-y-2">
+                          <h4 className="text-sm font-semibold text-muted-foreground">
+                            Servicios básicos
+                          </h4>
+                          <Separator className="my-2" />
                           <label className="text-sm font-medium">
                             Cuenta con los siguientes servicios (marque los que
                             aplique)
                           </label>
-                          <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+                          <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
                             <label className="flex items-center gap-2">
                               <input
                                 type="checkbox"
@@ -716,7 +737,11 @@ export default function DataManagement() {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <h4 className="text-sm font-semibold text-muted-foreground">
+                          Ingresos
+                        </h4>
+                        <Separator className="my-2" />
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
                               Frecuencia
@@ -756,7 +781,11 @@ export default function DataManagement() {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <h4 className="text-sm font-semibold text-muted-foreground">
+                          Empleo
+                        </h4>
+                        <Separator className="my-2" />
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
                               ¿Cuántas personas cuentan con empleo formal?
