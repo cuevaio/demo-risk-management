@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle } from "lucide-react";
 import "leaflet/dist/leaflet.css";
+import { toMapImpactPoints } from "@/lib/points";
 
 interface ImpactPoint {
   id: string;
@@ -42,8 +43,8 @@ export default function MapViewer({
 
       // Mapa centrado en Lima, Perú
       map = L.map(mapRef.current, {
-        center: [-12.046374, -77.042793],
-        zoom: 14,
+        center: [-16.394224, -71.469349],
+        zoom: 15,
       });
 
       // Capa satelital similar al screenshot
@@ -67,11 +68,12 @@ export default function MapViewer({
 
       // Polígono de ejemplo en Lima (zona ficticia)
       const polygonCoords: [number, number][] = [
-        [-12.059, -76.9545],
-        [-12.0565, -76.9492],
-        [-12.0609, -76.9468],
-        [-12.0654, -76.953],
-        [-12.062, -76.9586],
+        [-16.399224, -71.469349],
+        [-16.390224, -71.459949],
+        [-16.390224, -71.489349],
+        [-16.394224, -71.489349],
+        [-16.409224, -71.479349],
+        [-16.405224, -71.469349],
       ];
 
       polygon = L.polygon(polygonCoords, {
@@ -84,36 +86,11 @@ export default function MapViewer({
       // Ajusta la vista al polígono
       map.fitBounds(polygon.getBounds(), { padding: [20, 20] });
 
-      // Tres puntos de riesgo (alto, medio, bajo) o usa los recibidos por props
+      // Usa la fuente de verdad unificada cuando no se reciben puntos por props
       const points: ImpactPoint[] =
         impactPoints && impactPoints.length
           ? impactPoints
-          : [
-              {
-                id: "1",
-                lat: -12.0612,
-                lng: -76.9527,
-                type: "riesgo",
-                severity: "alto",
-                details: {},
-              },
-              {
-                id: "2",
-                lat: -12.0602,
-                lng: -76.9516,
-                type: "riesgo",
-                severity: "medio",
-                details: {},
-              },
-              {
-                id: "3",
-                lat: -12.062,
-                lng: -76.9538,
-                type: "riesgo",
-                severity: "bajo",
-                details: {},
-              },
-            ];
+          : (toMapImpactPoints() as unknown as ImpactPoint[]);
 
       const iconForSeverity = (severity: string) => {
         const bg =

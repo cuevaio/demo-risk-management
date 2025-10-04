@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -15,57 +15,50 @@ import {
 import { AlertCircle, Download, Filter, Layers, MapPin } from "lucide-react";
 import MapViewer from "./map-viewer";
 import ImpactDetails from "./impact-details";
+import { toMapImpactPoints, getUnifiedPointById } from "@/lib/points";
 
 export default function Dashboard() {
   const [activeMap, setActiveMap] = useState("riesgo");
   const [selectedImpact, setSelectedImpact] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Datos de ejemplo para los impactos
-  const impactPoints = [
-    {
-      id: "1",
-      lat: -12.058448,
-      lng: -76.949898,
-      type: "social",
-      severity: "alto",
-      details: {
-        title: "Impacto Social Alto",
-        housing: "Cemento con estructuras",
-        damage: "Acceso a servicios básicos",
-        services: ["Agua", "Luz", "Teléfono"],
-        affected: 25,
-      },
-    },
-    {
-      id: "2",
-      lat: -12.062058,
-      lng: -76.956098,
-      type: "economico",
-      severity: "medio",
-      details: {
-        title: "Impacto Económico Medio",
-        housing: "Madera",
-        damage: "Daño a infraestructura",
-        services: ["Luz"],
-        affected: 12,
-      },
-    },
-    {
-      id: "3",
-      lat: -12.064058,
-      lng: -76.953098,
-      type: "material",
-      severity: "bajo",
-      details: {
-        title: "Impacto Material Bajo",
-        housing: "Adobe",
-        damage: "Daños leves a viviendas",
-        services: [],
-        affected: 5,
-      },
-    },
-  ];
+  // Puntos unificados desde la fuente de verdad
+  const impactPoints = useMemo(() => toMapImpactPoints(), []);
+
+  // Detalles unidos para el panel lateral
+  const selectedDetails = useMemo(() => {
+    if (!selectedImpact) return null;
+    const p = getUnifiedPointById(selectedImpact);
+    if (!p) return null;
+
+    const riskLabel =
+      p.lossRiskCategory === "alto"
+        ? "Alto"
+        : p.lossRiskCategory === "medio"
+          ? "Medio"
+          : "Bajo";
+
+    const soles = (n: number) =>
+      `S/. ${Number(n || 0).toLocaleString("es-PE", { maximumFractionDigits: 0 })}`;
+
+    const services: string[] = [];
+    services.push(`Riesgo: ${riskLabel}`);
+    if (p.geo) {
+      services.push(`Proc.: ${p.geo.processDominance}`);
+      services.push(`Var.: ${p.geo.variabilityIndex.toFixed(2)}`);
+    }
+    if (p.socio) {
+      services.push(`Seguro: ${p.socio.hasAnyInsurance ? "Sí" : "No"}`);
+    }
+
+    return {
+      title: `${p.zone}`,
+      housing: `Zona: ${p.zone} — ${p.department}`,
+      damage: `Pérdida estimada de vivienda: ${soles(p.lossHousing)}`,
+      services,
+      affected: p.socio?.householdSize ?? 0,
+    };
+  }, [selectedImpact]);
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -172,9 +165,7 @@ export default function Dashboard() {
           <CardContent>
             {selectedImpact ? (
               <ImpactDetails
-                impact={
-                  impactPoints.find((p) => p.id === selectedImpact)?.details
-                }
+                impact={selectedDetails}
                 onClose={() => setSelectedImpact(null)}
               />
             ) : (
