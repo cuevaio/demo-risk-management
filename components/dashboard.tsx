@@ -1,26 +1,32 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { AlertCircle, Download, Filter, Layers, MapPin } from "lucide-react"
-import MapViewer from "./map-viewer"
-import ImpactDetails from "./impact-details"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AlertCircle, Download, Filter, Layers, MapPin } from "lucide-react";
+import MapViewer from "./map-viewer";
+import ImpactDetails from "./impact-details";
 
 export default function Dashboard() {
-  const [activeMap, setActiveMap] = useState("riesgo")
-  const [selectedImpact, setSelectedImpact] = useState<string | null>(null)
-  const [showFilters, setShowFilters] = useState(false)
+  const [activeMap, setActiveMap] = useState("riesgo");
+  const [selectedImpact, setSelectedImpact] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Datos de ejemplo para los impactos
   const impactPoints = [
     {
       id: "1",
-      lat: -11.756448,
-      lng: -76.986898,
+      lat: -12.058448,
+      lng: -76.949898,
       type: "social",
       severity: "alto",
       details: {
@@ -33,8 +39,8 @@ export default function Dashboard() {
     },
     {
       id: "2",
-      lat: -11.757448,
-      lng: -76.987898,
+      lat: -12.062058,
+      lng: -76.956098,
       type: "economico",
       severity: "medio",
       details: {
@@ -47,8 +53,8 @@ export default function Dashboard() {
     },
     {
       id: "3",
-      lat: -11.758448,
-      lng: -76.988898,
+      lat: -12.064058,
+      lng: -76.953098,
       type: "material",
       severity: "bajo",
       details: {
@@ -59,7 +65,7 @@ export default function Dashboard() {
         affected: 5,
       },
     },
-  ]
+  ];
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -67,7 +73,11 @@ export default function Dashboard() {
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-md font-medium">Visor de Mapas</CardTitle>
           <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+            >
               <Filter className="mr-2 h-4 w-4" />
               Filtros
             </Button>
@@ -97,7 +107,9 @@ export default function Dashboard() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox id="layer-socioeconomic" defaultChecked />
-                    <label htmlFor="layer-socioeconomic">Datos Socioeconómicos</label>
+                    <label htmlFor="layer-socioeconomic">
+                      Datos Socioeconómicos
+                    </label>
                   </div>
                 </div>
               </DialogContent>
@@ -109,7 +121,9 @@ export default function Dashboard() {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="riesgo">Mapa de Riesgo</TabsTrigger>
               <TabsTrigger value="impacto-social">Impacto Social</TabsTrigger>
-              <TabsTrigger value="impacto-economico">Impacto Económico</TabsTrigger>
+              <TabsTrigger value="impacto-economico">
+                Impacto Económico
+              </TabsTrigger>
             </TabsList>
           </Tabs>
 
@@ -138,7 +152,11 @@ export default function Dashboard() {
           )}
 
           <div className="relative h-[500px] w-full rounded-md border">
-            <MapViewer mapType={activeMap} impactPoints={impactPoints} onSelectPoint={(id) => setSelectedImpact(id)} />
+            <MapViewer
+              mapType={activeMap}
+              impactPoints={impactPoints}
+              onSelectPoint={(id) => setSelectedImpact(id)}
+            />
           </div>
         </CardContent>
       </Card>
@@ -146,13 +164,17 @@ export default function Dashboard() {
       <div className="flex flex-col gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-md font-medium">Resumen de Impacto</CardTitle>
+            <CardTitle className="text-md font-medium">
+              Resumen de Impacto
+            </CardTitle>
             <AlertCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             {selectedImpact ? (
               <ImpactDetails
-                impact={impactPoints.find((p) => p.id === selectedImpact)?.details}
+                impact={
+                  impactPoints.find((p) => p.id === selectedImpact)?.details
+                }
                 onClose={() => setSelectedImpact(null)}
               />
             ) : (
@@ -177,11 +199,15 @@ export default function Dashboard() {
                 <p className="text-2xl font-bold">124</p>
               </div>
               <div>
-                <p className="text-sm font-medium">Personas potencialmente afectadas</p>
+                <p className="text-sm font-medium">
+                  Personas potencialmente afectadas
+                </p>
                 <p className="text-2xl font-bold">568</p>
               </div>
               <div>
-                <p className="text-sm font-medium">Impacto económico estimado</p>
+                <p className="text-sm font-medium">
+                  Impacto económico estimado
+                </p>
                 <p className="text-2xl font-bold">S/. 1.2M</p>
               </div>
             </div>
@@ -194,5 +220,5 @@ export default function Dashboard() {
         </Button>
       </div>
     </div>
-  )
+  );
 }

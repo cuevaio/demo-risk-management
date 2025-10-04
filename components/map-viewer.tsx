@@ -91,54 +91,48 @@ export default function MapViewer({
           : [
               {
                 id: "1",
-                lat: -12.0615,
-                lng: -76.9525,
+                lat: -12.0612,
+                lng: -76.9527,
                 type: "riesgo",
                 severity: "alto",
                 details: {},
               },
               {
                 id: "2",
-                lat: -12.06,
-                lng: -76.9498,
+                lat: -12.0602,
+                lng: -76.9516,
                 type: "riesgo",
                 severity: "medio",
                 details: {},
               },
               {
                 id: "3",
-                lat: -12.0632,
-                lng: -76.9568,
+                lat: -12.062,
+                lng: -76.9538,
                 type: "riesgo",
                 severity: "bajo",
                 details: {},
               },
             ];
 
-      const iconForSeverity = (id: string, severity: string) => {
+      const iconForSeverity = (severity: string) => {
         const bg =
           severity === "alto"
             ? "bg-red-500"
             : severity === "medio"
               ? "bg-yellow-500"
               : "bg-green-500";
-        const border =
-          severity === "alto"
-            ? "border-red-700"
-            : severity === "medio"
-              ? "border-yellow-700"
-              : "border-green-700";
         return L.divIcon({
           className: "",
-          html: `<div class="rounded-md ${bg} ${border} border-2 px-2 py-1 text-white text-xs shadow">I${id}</div>`,
-          iconSize: [30, 22],
-          iconAnchor: [15, 11],
+          html: `<div class="w-6 h-6 rounded-full ${bg} border-2 border-white shadow"></div>`,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12],
         });
       };
 
       points.forEach((p) => {
         const m = L.marker([p.lat, p.lng], {
-          icon: iconForSeverity(p.id, p.severity),
+          icon: iconForSeverity(p.severity),
         }).addTo(map);
         m.on("click", () => onSelectPoint(p.id));
         markers.push(m);
@@ -169,7 +163,7 @@ export default function MapViewer({
       <div ref={mapRef} className="absolute inset-0 rounded-md"></div>
 
       {loading && (
-        <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 z-[1000] flex items-center justify-center">
           <div className="flex flex-col items-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary"></div>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -179,7 +173,7 @@ export default function MapViewer({
         </div>
       )}
 
-      <div className="absolute bottom-2 left-2 rounded-md bg-white/90 p-2 text-xs">
+      <div className="absolute bottom-2 left-2 z-[1000] rounded-md bg-white/90 p-2 text-xs">
         <div className="flex items-center space-x-2">
           <div className="h-3 w-3 rounded-full bg-red-500"></div>
           <span>Riesgo Alto</span>
@@ -194,7 +188,7 @@ export default function MapViewer({
         </div>
       </div>
 
-      <div className="absolute right-2 top-2 rounded-md bg-white/90 p-2">
+      <div className="absolute right-2 top-2 z-[1000] rounded-md bg-white/90 p-2">
         <div className="flex items-center space-x-1 text-xs">
           <AlertCircle className="h-3 w-3" />
           <span>
