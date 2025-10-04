@@ -111,11 +111,10 @@ export default function Dashboard() {
         </CardHeader>
         <CardContent>
           <Tabs value={activeMap} onValueChange={setActiveMap} className="mb-4">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="riesgo">Mapa de Riesgo</TabsTrigger>
-              <TabsTrigger value="impacto-social">Impacto Social</TabsTrigger>
-              <TabsTrigger value="impacto-economico">
-                Impacto Económico
+              <TabsTrigger value="impacto-socioeconomico">
+                Impacto Socioeconómico
               </TabsTrigger>
             </TabsList>
           </Tabs>

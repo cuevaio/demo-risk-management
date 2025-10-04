@@ -169,11 +169,7 @@ export default function MapViewer({
         <div className="flex items-center space-x-1 text-xs">
           <AlertCircle className="h-3 w-3" />
           <span>
-            {mapType === "riesgo"
-              ? "Mapa de Riesgo"
-              : mapType === "impacto-social"
-                ? "Impacto Social"
-                : "Impacto Económico"}
+            {mapType === "riesgo" ? "Mapa de Riesgo" : "Impacto Socioeconómico"}
           </span>
         </div>
       </div>

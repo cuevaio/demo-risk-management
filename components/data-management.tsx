@@ -22,6 +22,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { FileUp, FileDown, Search, Filter, Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import socioeconomic, {
   socioeconomicColumns,
   aggregateByZone,
@@ -145,6 +154,14 @@ export default function DataManagement() {
     a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleNewSurveySubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const data: any = Object.fromEntries(fd.entries());
+    data.services = fd.getAll("services");
+    console.log("Nueva Encuesta (socioeconómica):", data);
   };
 
   return (
@@ -469,10 +486,318 @@ export default function DataManagement() {
                     <FileDown className="mr-2 h-4 w-4" />
                     Exportar CSV
                   </Button>
-                  <Button>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Nueva Encuesta
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Nueva Encuesta
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-h-[80vh] overflow-auto">
+                      <DialogHeader>
+                        <DialogTitle>Información Socioeconómica</DialogTitle>
+                        <DialogDescription>
+                          Por favor complete todos los campos del formulario con
+                          la información solicitada.
+                        </DialogDescription>
+                      </DialogHeader>
+
+                      <form
+                        onSubmit={handleNewSurveySubmit}
+                        className="space-y-6"
+                      >
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuál es su género?
+                            </label>
+                            <div className="flex flex-col gap-2">
+                              <label className="flex items-center gap-2">
+                                <input
+                                  type="radio"
+                                  name="gender"
+                                  value="femenino"
+                                  className="h-4 w-4"
+                                />
+                                <span>Femenino</span>
+                              </label>
+                              <label className="flex items-center gap-2">
+                                <input
+                                  type="radio"
+                                  name="gender"
+                                  value="masculino"
+                                  className="h-4 w-4"
+                                />
+                                <span>Masculino</span>
+                              </label>
+                              <label className="flex items-center gap-2">
+                                <input
+                                  type="radio"
+                                  name="gender"
+                                  value="otro"
+                                  className="h-4 w-4"
+                                />
+                                <span>Otro</span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuál es su edad?
+                            </label>
+                            <select
+                              name="ageRange"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            >
+                              <option value="" hidden>
+                                Seleccione un rango de edad
+                              </option>
+                              <option value="18-24">18–24</option>
+                              <option value="25-34">25–34</option>
+                              <option value="35-44">35–44</option>
+                              <option value="45-64">45–64</option>
+                              <option value="65+">65+</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas viven en su hogar?
+                            </label>
+                            <input
+                              name="householdSize"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas son mayores de 65?
+                            </label>
+                            <input
+                              name="elders65"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas son menores de 10?
+                            </label>
+                            <input
+                              name="childrenUnder10"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas tienen acceso a un seguro de
+                              salud?
+                            </label>
+                            <input
+                              name="healthInsuranceCount"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas tienen condición de salud
+                              crónica o degenerativa?
+                            </label>
+                            <input
+                              name="chronicConditionCount"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas han terminado estudios técnicos
+                              o universitarios?
+                            </label>
+                            <input
+                              name="higherEducationCount"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas no saben leer ni escribir?
+                            </label>
+                            <input
+                              name="illiterateCount"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              Seleccione el material principal de las paredes de
+                              su vivienda
+                            </label>
+                            <select
+                              name="wallMaterial"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            >
+                              <option value="" hidden>
+                                Seleccione el material
+                              </option>
+                              <option value="adobe">Adobe</option>
+                              <option value="madera">Madera</option>
+                              <option value="ladrillo">Ladrillo</option>
+                              <option value="concreto">Concreto</option>
+                              <option value="prefabricado">Prefabricado</option>
+                              <option value="otro">Otro</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">
+                            Cuenta con los siguientes servicios (marque los que
+                            aplique)
+                          </label>
+                          <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+                            <label className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                name="services"
+                                value="agua"
+                                className="h-4 w-4"
+                              />
+                              <span>Agua potable</span>
+                            </label>
+                            <label className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                name="services"
+                                value="electricidad"
+                                className="h-4 w-4"
+                              />
+                              <span>Electricidad</span>
+                            </label>
+                            <label className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                name="services"
+                                value="internet"
+                                className="h-4 w-4"
+                              />
+                              <span>Internet</span>
+                            </label>
+                            <label className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                name="services"
+                                value="gas"
+                                className="h-4 w-4"
+                              />
+                              <span>Gas</span>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              Frecuencia
+                            </label>
+                            <div className="flex items-center gap-4">
+                              <label className="flex items-center gap-2">
+                                <input
+                                  type="radio"
+                                  name="incomeFrequency"
+                                  value="dia"
+                                  className="h-4 w-4"
+                                />
+                                <span>Día</span>
+                              </label>
+                              <label className="flex items-center gap-2">
+                                <input
+                                  type="radio"
+                                  name="incomeFrequency"
+                                  value="mes"
+                                  className="h-4 w-4"
+                                />
+                                <span>Mes</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              Ingreso mensual aproximado de la familia
+                            </label>
+                            <input
+                              name="monthlyIncome"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                              placeholder="Indique el monto en la moneda local"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas cuentan con empleo formal?
+                            </label>
+                            <input
+                              name="formalJobs"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántas personas cuentan con empleo informal?
+                            </label>
+                            <input
+                              name="informalJobs"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">
+                              ¿Cuántos miembros activos?
+                            </label>
+                            <input
+                              name="activeMembers"
+                              type="number"
+                              min="0"
+                              className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <DialogFooter className="sm:justify-end">
+                          <Button type="submit">Enviar formulario</Button>
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
 
